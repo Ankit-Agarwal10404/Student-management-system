@@ -1,5 +1,8 @@
 package com.springBootProject.collegeManagement.entity;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -28,7 +31,13 @@ public class Student {
     @Column(unique = true)
     private String email;
 
-    private String course;
-
     private Double percentage;
+
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    @JoinTable(
+            name = "student_courses",
+            joinColumns = @JoinColumn(name = "student_id"),
+            inverseJoinColumns = @JoinColumn(name = "course_id")
+    )
+    private Set<Course> courses = new HashSet<>();
 }
