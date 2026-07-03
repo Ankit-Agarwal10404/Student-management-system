@@ -40,7 +40,6 @@ public class StudentServiceImp implements StudentService {
             existing.setFirstName(student.getFirstName());
             existing.setLastName(student.getLastName());
             existing.setEmail(student.getEmail());
-            existing.setCourse(student.getCourse());
             existing.setPercentage(student.getPercentage());
 
             return repository.save(existing);

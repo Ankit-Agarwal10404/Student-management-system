@@ -34,7 +34,7 @@ public class Student {
     private Double percentage;
 
     @ManyToMany(cascade = CascadeType.PERSIST)
-    @JoinTable(
+    @JoinTable(	
             name = "student_courses",
             joinColumns = @JoinColumn(name = "student_id"),
             inverseJoinColumns = @JoinColumn(name = "course_id")
