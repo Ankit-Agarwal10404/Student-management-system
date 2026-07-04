@@ -20,30 +20,30 @@ import com.springBootProject.collegeManagement.service.StudentService;
 
 public class StudentController {
 
-    private final StudentService service;
+    private final StudentService studentService;
 
     public StudentController(StudentService service) {
-        this.service = service;
+        this.studentService = service;
     }
 
     @PostMapping
     public Student saveStudent(@RequestBody Student student) {
 
-        return service.saveStudent(student);
+        return studentService.saveStudent(student);
 
     }
 
     @GetMapping
     public List<Student> getAllStudents() {
 
-        return service.getAllStudents();
+        return studentService.getAllStudents();
 
     }
 
     @GetMapping("/{id}")
     public Student getStudentById(@PathVariable Long id) {
 
-        return service.getStudentById(id);
+        return studentService.getStudentById(id);
 
     }
 
@@ -51,17 +51,25 @@ public class StudentController {
     public Student updateStudent(@PathVariable Long id,
                                  @RequestBody Student student) {
 
-        return service.updateStudent(id, student);
+        return studentService.updateStudent(id, student);
 
     }
 
     @DeleteMapping("/{id}")
     public String deleteStudent(@PathVariable Long id) {
 
-        service.deleteStudent(id);
+        studentService.deleteStudent(id);
 
         return "Student Deleted Successfully";
 
+    }
+    
+    @PostMapping("/{studentId}/courses/{courseId}")
+    public Student assignCourse(
+            @PathVariable Long studentId,
+            @PathVariable Long courseId) {
+
+        return studentService.assignCourse(studentId, courseId);
     }
 
 }
