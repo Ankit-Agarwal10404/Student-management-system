@@ -33,11 +33,12 @@ public class Student {
 
     private Double percentage;
 
-    @ManyToMany(cascade = CascadeType.PERSIST)
-    @JoinTable(	
-            name = "student_courses",
-            joinColumns = @JoinColumn(name = "student_id"),
-            inverseJoinColumns = @JoinColumn(name = "course_id")
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "student_course",
+        joinColumns = @JoinColumn(name = "student_id"),
+        inverseJoinColumns = @JoinColumn(name = "course_id")
     )
     private Set<Course> courses = new HashSet<>();
+
 }

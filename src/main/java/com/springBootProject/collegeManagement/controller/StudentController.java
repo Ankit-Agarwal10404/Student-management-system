@@ -71,5 +71,13 @@ public class StudentController {
 
         return studentService.assignCourse(studentId, courseId);
     }
+    
+    @DeleteMapping("/{studentId}/courses/{courseId}")
+    public Student removeCourse(
+            @PathVariable Long studentId,
+            @PathVariable Long courseId) {
+
+        return studentService.removeCourse(studentId, courseId);
+    }
 
 }

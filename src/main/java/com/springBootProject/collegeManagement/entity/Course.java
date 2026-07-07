@@ -6,6 +6,8 @@ import lombok.*;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "courses")
 @Getter
@@ -28,7 +30,8 @@ public class Course {
 
     private Double fees;
 
-    @ManyToMany(mappedBy = "courses")
+    @ManyToMany(mappedBy = "courses", fetch = FetchType.LAZY)
+    @JsonIgnore
     private Set<Student> students = new HashSet<>();
 
 }

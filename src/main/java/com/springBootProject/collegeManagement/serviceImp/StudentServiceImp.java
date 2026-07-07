@@ -12,10 +12,8 @@ import java.util.List;
 
 @Service
 public class StudentServiceImp implements StudentService {
-	@Autowired
     private final StudentRepository studentRepository;
     
-	@Autowired
     private final CourseRepository courseRepository;
 
     public StudentServiceImp(StudentRepository repository, CourseRepository courseRepository) {
@@ -41,7 +39,7 @@ public class StudentServiceImp implements StudentService {
     @Override
     public Student updateStudent(Long id, Student student) {
 
-        Student existing = studentRepository.findById(id).orElse(null);
+        Student existing = studentRepository.findById(id).orElseThrow(()->new RuntimeException("student not found"));
 
         if (existing != null) {
             existing.setFirstName(student.getFirstName());
@@ -70,9 +68,28 @@ public class StudentServiceImp implements StudentService {
 		Course course = courseRepository.findById(courseId)
 				.orElseThrow(()-> new RuntimeException("course not found"));
 		
-		student.getCourses().add(course);	
+		student.getCourses().add(course);
+		course.getStudents().add(student);	
 		
 		return studentRepository.save(student);
+	}
+
+
+	@Override
+	public Student removeCourse(Long studentId, Long courseId) {
+
+	    Student student = studentRepository.findById(studentId)
+	            .orElseThrow(() ->
+	                    new RuntimeException("Student not found"));
+
+	    Course course = courseRepository.findById(courseId)
+	            .orElseThrow(() ->
+	                    new RuntimeException("Course not found"));
+
+	    student.getCourses().remove(course);
+	    course.getStudents().remove(student);
+
+	    return studentRepository.save(student);
 	}
 
 }
