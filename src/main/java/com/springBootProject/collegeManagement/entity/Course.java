@@ -33,5 +33,11 @@ public class Course {
     @ManyToMany(mappedBy = "courses", fetch = FetchType.LAZY)
     @JsonIgnore
     private Set<Student> students = new HashSet<>();
+    
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "teacher_id")
+    
+    private Teacher teacher;
 
 }

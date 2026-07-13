@@ -2,6 +2,7 @@ package com.springBootProject.collegeManagement.controller;
 
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -77,6 +78,25 @@ public class CourseController {
 	    										@PathVariable Long id) {
 		 	courseService.deleteCourse(id);
 	        return "Student Deleted Successfully";
-
 	    }
+	
+	
+	
+	
+	
+	@PutMapping("/{courseId}/teacher/{teacherId}")
+	public ResponseEntity<Course> assignTeacher(
+	        @PathVariable Long courseId,
+	        @PathVariable Long teacherId) {
+
+	    return ResponseEntity.ok(courseService.assignTeacher(courseId, teacherId));
+	}
+	
+	@DeleteMapping("/{courseId}/teacher")
+	public ResponseEntity<Course> removeTeacher(@PathVariable Long courseId) {
+
+	    return ResponseEntity.ok(courseService.removeTeacher(courseId));
+	}
+	
+	
 }

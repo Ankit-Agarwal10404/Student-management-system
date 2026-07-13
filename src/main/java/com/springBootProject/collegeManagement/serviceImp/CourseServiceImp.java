@@ -5,17 +5,21 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.springBootProject.collegeManagement.entity.Course;
+import com.springBootProject.collegeManagement.entity.Teacher;
 import com.springBootProject.collegeManagement.repository.CourseRepository;
+import com.springBootProject.collegeManagement.repository.TeacherRepository;
 import com.springBootProject.collegeManagement.service.CourseService;
 
 @Service
 public class CourseServiceImp implements CourseService{
 
 	private final CourseRepository courseRepository;
+	private final TeacherRepository teacherRepository;
 	
-	public CourseServiceImp(CourseRepository courseRepository) {
+	public CourseServiceImp(CourseRepository courseRepository, TeacherRepository teacherRepository) {
 		// TODO Auto-generated constructor stub
 		this.courseRepository=courseRepository;
+		this.teacherRepository=teacherRepository;
 	}
 	public Course saveCourse(Course course) {
 		return courseRepository.save(course);
@@ -50,5 +54,38 @@ public class CourseServiceImp implements CourseService{
 		courseRepository.deleteById(id);
 		
 	}
+	
+	@Override
+	public Course assignTeacher(Long courseId, Long teacherId) {
 
+	    Course course = courseRepository.findById(courseId)
+	    		.orElseThrow(()-> new RuntimeException("Course not found"));
+	            
+	    Teacher teacher = teacherRepository.findById(teacherId)
+	    		.orElseThrow(()-> new RuntimeException("Teacher not found"));
+
+	    course.setTeacher(teacher);
+
+	    return courseRepository.save(course);
+	}
+
+	@Override
+	public Course removeTeacher(Long courseId) {
+
+	    Course course = courseRepository.findById(courseId)
+	    		.orElseThrow(()-> new RuntimeException("Course not found"));
+
+	    course.setTeacher(null);
+
+	    return courseRepository.save(course);
+	}
+	
+	@Override
+	public List<Course> getTeacherCourses(Long teacherId) {
+
+	    Teacher teacher = teacherRepository.findById(teacherId)
+	    		.orElseThrow(()-> new RuntimeException("Teacher not found"));
+
+	    return teacher.getCourses();
+	}
 }
