@@ -20,8 +20,12 @@ import com.springBootProject.collegeManagement.entity.Course;
 import com.springBootProject.collegeManagement.service.CourseService;
 import com.springBootProject.collegeManagement.service.TeacherService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
+@Tag(name = "Teacher Controllers", description = "CURD operations for Teacher")
 @RestController
 @RequestMapping("/teachers")
 @Validated
@@ -33,39 +37,61 @@ public class TeacherController {
     @Autowired
     private CourseService courseService;
 
+    
+    @Operation(summary = "save teacher",
+    		description = "creating a new teacher")
     @PostMapping
     public TeacherResponseDTO saveTeacher(@Valid @RequestBody TeacherRequestDTO requestDTO) {
         return teacherService.saveTeacher(requestDTO);
     }
 
+    @Operation(summary = "Get teacher by id",
+    		description = "Getting Teacher buy using Teacher id")
     @GetMapping("/{id}")
-    public TeacherResponseDTO getTeacherById(@PathVariable Long id) {
+    public TeacherResponseDTO getTeacherById(@Parameter(description = "Teacher ID")
+    														@PathVariable Long id) {
         return teacherService.getTeacher(id);
     }
 
+    
+    @Operation(summary = "Get All Teachers",
+    		description = "Getting all Teachers details")
     @GetMapping
     public List<TeacherResponseDTO> getAllTeachers() {
         return teacherService.getAllTeachers();
     }
 
+    
+    @Operation(summary = "Update Teacher",
+    		description = "Updating Teacher using Teacher id")
     @PutMapping("/{id}")
     public TeacherResponseDTO updateTeacher(
+    		@Parameter(description = "Teacher ID")
             @PathVariable Long id,
             @Valid @RequestBody TeacherRequestDTO requestDTO) {
 
         return teacherService.updateTeacher(id, requestDTO);
     }
+    
+    
+    @Operation(summary = "Delete Teacher",
+    		description = "Deleting Teacher details using Teacher id")
 
     @DeleteMapping("/{id}")
-    public String deleteTeacher(@PathVariable Long id) {
+    public String deleteTeacher(@Parameter(description = "Teacher ID")
+    											@PathVariable Long id) {
 
         teacherService.deleteTeacher(id);
         return "Teacher deleted successfully.";
     }
     
+    
+    @Operation(summary = "Get Courses for Teacher",
+    		description = "Used to get all the courses assigned to the teacher")
     @GetMapping("/teachers/{teacherId}/courses")
 	public ResponseEntity<List<Course>> getTeacherCourses(
-	        @PathVariable Long teacherId) {
+															@Parameter(description = "Teacher ID")
+	        												@PathVariable Long teacherId) {
 
 	    return ResponseEntity.ok(courseService.getTeacherCourses(teacherId));
 	}
