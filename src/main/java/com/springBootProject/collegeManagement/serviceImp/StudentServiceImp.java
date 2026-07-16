@@ -1,9 +1,12 @@
 package com.springBootProject.collegeManagement.serviceImp;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.springBootProject.collegeManagement.dto.student.StudentRequestDTO;
+import com.springBootProject.collegeManagement.dto.student.StudentResponseDTO;
 import com.springBootProject.collegeManagement.entity.Course;
 import com.springBootProject.collegeManagement.entity.Student;
+import com.springBootProject.collegeManagement.exception.ResourceNotFoundException;
+import com.springBootProject.collegeManagement.mapper.StudentMapper;
 import com.springBootProject.collegeManagement.repository.CourseRepository;
 import com.springBootProject.collegeManagement.repository.StudentRepository;
 import com.springBootProject.collegeManagement.service.StudentService;
@@ -13,44 +16,52 @@ import java.util.List;
 @Service
 public class StudentServiceImp implements StudentService {
     private final StudentRepository studentRepository;
-    
+    private final StudentMapper studentMapper;
     private final CourseRepository courseRepository;
 
-    public StudentServiceImp(StudentRepository repository, CourseRepository courseRepository) {
+    public StudentServiceImp(StudentRepository repository, CourseRepository courseRepository, StudentMapper studentMapper) {
         this.studentRepository = repository;
         this.courseRepository=courseRepository;
+        this.studentMapper=studentMapper;
     }
 
     @Override
-    public Student saveStudent(Student student) {
-        return studentRepository.save(student);
+    public StudentResponseDTO saveStudent(StudentRequestDTO studentRequestDTO) {
+    	Student student = studentMapper.toEntity(studentRequestDTO);
+         studentRepository.save(student);
+         return studentMapper.toDTO(student);
     }
 
     @Override
-    public List<Student> getAllStudents() {
-        return studentRepository.findAll();
+    public List<StudentResponseDTO> getAllStudents() {
+        List<Student> students= studentRepository.findAll();
+        return studentMapper.toDTOList(students);
     }
 
     @Override
-    public Student getStudentById(Long id) {
-        return studentRepository.findById(id).orElse(null);
+    public StudentResponseDTO getStudentById(Long id) {
+        Student student= studentRepository.findById(id)
+        		.orElseThrow(()->new ResourceNotFoundException("student not found"));
+        
+        return studentMapper.toDTO(student);
     }
 
     @Override
-    public Student updateStudent(Long id, Student student) {
+    public StudentResponseDTO updateStudent(Long id, StudentRequestDTO student) {
 
-        Student existing = studentRepository.findById(id).orElseThrow(()->new RuntimeException("student not found"));
-
-        if (existing != null) {
+        Student existing = studentRepository.findById(id)
+        		.orElseThrow(()->new ResourceNotFoundException("student not found"));
+        	
+        	//updating existing student
             existing.setFirstName(student.getFirstName());
             existing.setLastName(student.getLastName());
             existing.setEmail(student.getEmail());
             existing.setPercentage(student.getPercentage());
 
-            return studentRepository.save(existing);
-        }
+            Student existingSaved= studentRepository.save(existing);
+            return studentMapper.toDTO(existingSaved);
 
-        return null;
+        
     }
 
     @Override
@@ -63,10 +74,10 @@ public class StudentServiceImp implements StudentService {
 	@Override
 	public Student assignCourse(Long studentId, Long courseId) {
 		Student student = studentRepository.findById(studentId)
-				.orElseThrow(()-> new RuntimeException("student not found"));
+				.orElseThrow(()-> new ResourceNotFoundException("student not found"));
 		
 		Course course = courseRepository.findById(courseId)
-				.orElseThrow(()-> new RuntimeException("course not found"));
+				.orElseThrow(()-> new ResourceNotFoundException("course not found"));
 		
 		student.getCourses().add(course);
 		course.getStudents().add(student);	
@@ -80,11 +91,11 @@ public class StudentServiceImp implements StudentService {
 
 	    Student student = studentRepository.findById(studentId)
 	            .orElseThrow(() ->
-	                    new RuntimeException("Student not found"));
+	                    new ResourceNotFoundException("Student not found"));
 
 	    Course course = courseRepository.findById(courseId)
 	            .orElseThrow(() ->
-	                    new RuntimeException("Course not found"));
+	                    new ResourceNotFoundException("Course not found"));
 
 	    student.getCourses().remove(course);
 	    course.getStudents().remove(student);

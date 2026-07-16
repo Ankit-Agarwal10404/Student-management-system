@@ -2,8 +2,8 @@ package com.springBootProject.collegeManagement.service;
 
 import java.util.List;
 
-import com.springBootProject.collegeManagement.dto.TeacherRequestDTO;
-import com.springBootProject.collegeManagement.dto.TeacherResponseDTO;
+import com.springBootProject.collegeManagement.dto.teacher.TeacherRequestDTO;
+import com.springBootProject.collegeManagement.dto.teacher.TeacherResponseDTO;
 
 public interface TeacherService {
 

@@ -1,4 +1,8 @@
-package com.springBootProject.collegeManagement.dto;
+package com.springBootProject.collegeManagement.dto.student;
+
+import java.util.Set;
+
+import com.springBootProject.collegeManagement.dto.course.CourseSummaryDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,7 +15,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class TeacherResponseDTO {
+public class StudentResponseDTO {
 
     private Long id;
 
@@ -21,7 +25,7 @@ public class TeacherResponseDTO {
 
     private String email;
 
-    private String department;
+    private Double percentage;
 
-    private Integer experience;
+    private Set<CourseSummaryDTO> courses;
 }

@@ -8,7 +8,7 @@ import io.swagger.v3.oas.annotations.info.Info;
 
 @OpenAPIDefinition(
 		info = @Info(
-				title = "College Management",
+				title = "Student Management",
 				description = "API for managing details about Students"))
 @SpringBootApplication
 public class CollegeManagementApplication {

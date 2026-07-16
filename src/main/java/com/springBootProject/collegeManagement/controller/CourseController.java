@@ -83,15 +83,21 @@ public class CourseController {
 	
 	
 	
-	
+	@Operation(summary = "Assign Teacher to Course",
+    		description = "API to assign the teacher to the course using Teacher ID and Course ID")
 	@PutMapping("/{courseId}/teacher/{teacherId}")
 	public ResponseEntity<Course> assignTeacher(
+			@Parameter(description = "Course ID")
 	        @PathVariable Long courseId,
+	        @Parameter(description = "Teacher ID")
 	        @PathVariable Long teacherId) {
 
 	    return ResponseEntity.ok(courseService.assignTeacher(courseId, teacherId));
 	}
 	
+	
+	@Operation(summary = "Remove Teacher from course",
+    		description = "API to remoce the Teacher from assigned course")
 	@DeleteMapping("/{courseId}/teacher")
 	public ResponseEntity<Course> removeTeacher(@PathVariable Long courseId) {
 

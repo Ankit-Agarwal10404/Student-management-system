@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.springBootProject.collegeManagement.dto.TeacherRequestDTO;
-import com.springBootProject.collegeManagement.dto.TeacherResponseDTO;
+import com.springBootProject.collegeManagement.dto.teacher.TeacherRequestDTO;
+import com.springBootProject.collegeManagement.dto.teacher.TeacherResponseDTO;
 import com.springBootProject.collegeManagement.entity.Course;
 import com.springBootProject.collegeManagement.service.CourseService;
 import com.springBootProject.collegeManagement.service.TeacherService;

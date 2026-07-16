@@ -5,9 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.springBootProject.collegeManagement.dto.TeacherRequestDTO;
-import com.springBootProject.collegeManagement.dto.TeacherResponseDTO;
+import com.springBootProject.collegeManagement.dto.teacher.TeacherRequestDTO;
+import com.springBootProject.collegeManagement.dto.teacher.TeacherResponseDTO;
 import com.springBootProject.collegeManagement.entity.Teacher;
+import com.springBootProject.collegeManagement.exception.ResourceNotFoundException;
 import com.springBootProject.collegeManagement.mapper.TeacherMapper;
 import com.springBootProject.collegeManagement.repository.TeacherRepository;
 import com.springBootProject.collegeManagement.service.TeacherService;
@@ -34,7 +35,7 @@ public class TeacherServiceImp implements TeacherService {
     public TeacherResponseDTO getTeacher(Long id) {
 
         Teacher teacher = teacherRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Teacher not found with id: " + id));
+                .orElseThrow(()-> new ResourceNotFoundException("Teacher not found"));
 
         return teacherMapper.toDTO(teacher);
     }
@@ -51,7 +52,8 @@ public class TeacherServiceImp implements TeacherService {
     public TeacherResponseDTO updateTeacher(Long id, TeacherRequestDTO dto) {
 
         Teacher teacher = teacherRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Teacher not found with id: " + id));
+        		 .orElseThrow(()-> new ResourceNotFoundException("Teacher not found"));
+
 
         teacher.setFirstName(dto.getFirstName());
         teacher.setLastName(dto.getLastName());
@@ -70,7 +72,7 @@ public class TeacherServiceImp implements TeacherService {
     public void deleteTeacher(Long id) {
 
         Teacher teacher = teacherRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Teacher not found with id: " + id));
+        		 .orElseThrow(()-> new ResourceNotFoundException("Teacher not found"));
 
         teacherRepository.delete(teacher);
     }

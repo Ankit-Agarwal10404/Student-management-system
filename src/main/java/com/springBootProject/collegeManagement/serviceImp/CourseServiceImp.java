@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.springBootProject.collegeManagement.entity.Course;
 import com.springBootProject.collegeManagement.entity.Teacher;
+import com.springBootProject.collegeManagement.exception.ResourceNotFoundException;
 import com.springBootProject.collegeManagement.repository.CourseRepository;
 import com.springBootProject.collegeManagement.repository.TeacherRepository;
 import com.springBootProject.collegeManagement.service.CourseService;
@@ -32,21 +33,19 @@ public class CourseServiceImp implements CourseService{
 
 	@Override
 	public Course getCourseById(Long id) {
-		return courseRepository.findById(id).orElse(null);
+		return courseRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("course not found"));
 	}
 
 	@Override
 	public Course updateCourse(Long id, Course course) {
-		Course c = courseRepository.findById(id).orElse(null);
-		if(c!=null) {
+		Course c = courseRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("course not found"));
+	
 			c.setCourseName(course.getCourseName());
 			c.setDuration(course.getDuration());
 			c.setCredits(course.getCredits());
 			c.setFees(course.getFees());
 			
 			return courseRepository.save(c);
-		}
-		return null;
 	}
 
 	@Override
@@ -59,10 +58,10 @@ public class CourseServiceImp implements CourseService{
 	public Course assignTeacher(Long courseId, Long teacherId) {
 
 	    Course course = courseRepository.findById(courseId)
-	    		.orElseThrow(()-> new RuntimeException("Course not found"));
+	    		.orElseThrow(()-> new ResourceNotFoundException("course not found"));
 	            
 	    Teacher teacher = teacherRepository.findById(teacherId)
-	    		.orElseThrow(()-> new RuntimeException("Teacher not found"));
+	    		.orElseThrow(()-> new ResourceNotFoundException("course not found"));
 
 	    course.setTeacher(teacher);
 
@@ -73,7 +72,7 @@ public class CourseServiceImp implements CourseService{
 	public Course removeTeacher(Long courseId) {
 
 	    Course course = courseRepository.findById(courseId)
-	    		.orElseThrow(()-> new RuntimeException("Course not found"));
+	    		.orElseThrow(()-> new ResourceNotFoundException("course not found"));
 
 	    course.setTeacher(null);
 
@@ -84,8 +83,7 @@ public class CourseServiceImp implements CourseService{
 	public List<Course> getTeacherCourses(Long teacherId) {
 
 	    Teacher teacher = teacherRepository.findById(teacherId)
-	    		.orElseThrow(()-> new RuntimeException("Teacher not found"));
-
+	    		.orElseThrow(()-> new ResourceNotFoundException("course not found"));
 	    return teacher.getCourses();
 	}
 }

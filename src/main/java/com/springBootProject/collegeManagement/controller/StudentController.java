@@ -12,12 +12,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.springBootProject.collegeManagement.dto.student.StudentRequestDTO;
+import com.springBootProject.collegeManagement.dto.student.StudentResponseDTO;
 import com.springBootProject.collegeManagement.entity.Student;
 import com.springBootProject.collegeManagement.service.StudentService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 
 @Tag(name = "Student Controllers", description = "CURD operations for Student")
 @RestController
@@ -31,10 +34,11 @@ public class StudentController {
         this.studentService = service;
     }
 
+    //method to save students
     @Operation(summary = "save student",
     		description = "creating a new Student")
     @PostMapping
-    public Student saveStudent( @RequestBody Student student) {
+    public StudentResponseDTO saveStudent( @Valid @RequestBody StudentRequestDTO student) {
 
         return studentService.saveStudent(student);
 
@@ -44,7 +48,7 @@ public class StudentController {
     @Operation(summary = "Get all student",
     		description = "Geting the detail of all Students")
     @GetMapping
-    public List<Student> getAllStudents() {
+    public List<StudentResponseDTO> getAllStudents() {
 
         return studentService.getAllStudents();
 
@@ -54,7 +58,7 @@ public class StudentController {
     		description = "Geting the detail of a Students using its id")
 
     @GetMapping("/{id}")
-    public Student getStudentById(@Parameter(description = "Student ID") @PathVariable Long id) {
+    public StudentResponseDTO getStudentById(@Parameter(description = "Student ID") @PathVariable Long id) {
 
         return studentService.getStudentById(id);
 
@@ -63,9 +67,9 @@ public class StudentController {
     @Operation(summary = "Update a student",
     		description = "Updating the detail of a Students using its id")
     @PutMapping("/{id}")
-    public Student updateStudent(@Parameter(description = "Student id")
+    public StudentResponseDTO updateStudent(@Parameter(description = "Student id")
     							@PathVariable Long id,
-                                 @RequestBody Student student) {
+                                 @Valid @RequestBody StudentRequestDTO student) {
 
         return studentService.updateStudent(id, student);
 

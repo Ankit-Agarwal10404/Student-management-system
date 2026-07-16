@@ -4,16 +4,18 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.springBootProject.collegeManagement.dto.student.StudentRequestDTO;
+import com.springBootProject.collegeManagement.dto.student.StudentResponseDTO;
 import com.springBootProject.collegeManagement.entity.Student;
 
 public interface StudentService {
-	 	Student saveStudent(Student student);
+	 	StudentResponseDTO saveStudent(StudentRequestDTO student);
 
-	    List<Student> getAllStudents();
+	    List<StudentResponseDTO> getAllStudents();
 
-	    Student getStudentById(Long id);
+	    StudentResponseDTO getStudentById(Long id);
 
-	    Student updateStudent(Long id, Student student);
+	    StudentResponseDTO updateStudent(Long id, StudentRequestDTO student);
 
 	    void deleteStudent(Long id);
 	    
